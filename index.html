@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>積分地獄（オフライン版）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- 最小の素スタイル（後でCSSに差し替え予定） -->
+  <style>
+    body { font-family: "Noto Sans JP", sans-serif; margin: 0; background: #fafafa; }
+    header, footer { background: #fff; border-bottom: 1px solid #ddd; padding: 0.75rem 1rem; }
+    footer { border-top: 1px solid #ddd; border-bottom: none; font-size: 0.9rem; color: #666; }
+    main { padding: 1rem; min-height: 70vh; }
+    #body { transition: opacity 0.2s ease-in-out; }
+  </style>
+
+  <!-- MathJax（ローカル同梱想定） -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)'],['$','$']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'local' }
+    };
+  </script>
+  <script defer src="mathjax/tex-chtml-full.js"></script>
+
+  <!-- 後で実装されるロジック読み込み -->
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><strong>積分ランダム演習</strong></div>
+      <div>
+        <select id="modeSelect">
+          <option value="title">タイトル画面</option>
+          <option value="random">ランダム出題</option>
+          <option value="all">全ジャンルランダム</option>
+          <option value="hintOnly">方針だけモード</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main id="body">
+    <!-- body_title.html / body_learn.html / body_swipe.html がここに挿入される -->
+  </main>
+
+  <footer>
+    <div>オフライン版｜外部通信なし</div>
+  </footer>
+</body>
+</html>
