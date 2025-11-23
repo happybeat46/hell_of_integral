@@ -1,9 +1,7 @@
 <section class="card" style="max-width:900px;margin:auto;">
   <div class="group">
     <div class="muted">問題</div>
-    <div id="question" class="mjx-container" style="padding:0.5rem 0;">
-      <!-- MathJaxでレンダリング -->
-    </div>
+    <div id="question" class="mjx-container" style="padding:0.5rem 0;"></div>
   </div>
 
   <div id="revealButtons" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:1rem;">
@@ -30,13 +28,5 @@
   <div id="gradingArea" style="display:flex;gap:1rem;margin-top:1.5rem;">
     <button id="btnCorrect">できた</button>
     <button id="btnWrong">できない</button>
-  </div>
-</section>
-
-<section class="card" style="max-width:900px;margin:2rem auto;">
-  <h3>学習カウント</h3>
-  <div style="display:flex;flex-wrap:wrap;gap:1rem;">
-    <div>この問題：<span id="perProblemCorrect">0</span>/<span id="perProblemShown">0</span>（<span id="perProblemRate">0%</span>）</div>
-    <div>累計：<span id="aggCorrect">0</span>/<span id="aggShown">0</span>（<span id="aggRate">0%</span>）</div>
   </div>
 </section>
