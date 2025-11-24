@@ -1,0 +1,143 @@
+/*
+[仕様メモ / styles.css]
+
+役割:
+- 全画面の共通スタイル。
+
+主要クラス:
+- レイアウト: .wrap, .card, .meta, .kx
+- タイトル: .title-screen, .app-title, .btn, .btn-primary, .btn-secondary
+- ミニチェッカー: .mini-checker + .cell(.red/.blue/.gray/.none)
+- 凡例: .legend(.l-red/.l-blue/.l-gray/.l-none)
+- チェッカー: .checker-title-page, .genre-list, .card-grid, .btn-prob(+ 色バリエーション)
+- 学習: .progress-rail, .progress-bar
+- スワイプ: #swipeContainer, #swipeCard, #swipeHint
+
+注意:
+- #titleCheckerGrid / #checkerGrid には .mini-checker を必ず併用（同じ見た目）。
+- MathJax は --math-scale でスケール調整（index.html から設定）。
+*/
+
+/* ====== Theme / Base ====== */
+:root {
+  --bg:#0b0c10; --card:#151820; --ink:#e7eef7; --muted:#aab4c3; --accent:#3abff8;
+  --math-scale: 0.90;
+}
+html,body {
+  margin:0; padding:0; background:var(--bg); color:var(--ink);
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Hiragino Sans","Noto Sans JP",sans-serif;
+}
+header { padding:16px 20px; border-bottom:1px solid #202534; display:flex; align-items:center; gap:12px; }
+.logo { font-weight:700; cursor:pointer; text-decoration:none; color:var(--ink); }
+.wrap { max-width:980px; margin:0 auto; padding:20px; }
+.mjx-container { font-size: calc(1em * var(--math-scale)); }
+
+/* ====== Cards / UI atoms ====== */
+.card { background:var(--card); border-radius:12px; padding:16px; }
+.meta { font-size:13px; color:var(--muted); }
+select.select, button.ghost {
+  background:#1b2740; color:#e7eef7; border:1px solid #2a3b66; border-radius:8px;
+  padding:8px 14px; cursor:pointer; transition:0.2s;
+}
+button.ghost:hover, select.select:focus { background:#2a3b66; }
+.kx { font-size: calc(20px * var(--math-scale)); line-height:1.6; }
+
+/* ====== Title screen ====== */
+.title-screen {
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  min-height:100vh; gap:20px; color:#fff; padding-top:40px;
+}
+.app-title { font-size:28px; font-weight:700; margin-bottom:10px; }
+
+/* Title buttons */
+.btn { font-size:16px; font-weight:600; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; }
+.btn-primary { background:#2b5bd9; color:#fff; } .btn-primary:hover { background:#3b6cff; }
+.btn-secondary { background:#444; color:#fff; } .btn-secondary:hover { background:#666; }
+
+/* ====== Mini Checker (共通で使用) ====== */
+.mini-checker {
+  display: grid;
+  grid-template-columns: repeat(10, 18px);
+  grid-auto-rows: 18px;
+  gap: 2px;
+  justify-content: center;
+}
+
+.mini-checker .cell {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  border: 1px solid #2a3248;
+}
+
+.mini-checker .cell.red  { background: #ef4444; border-color: #b91c1c; }
+.mini-checker .cell.blue { background: #3b82f6; border-color: #1d4ed8; }
+.mini-checker .cell.gray { background: #4b5563; border-color: #374151; }
+.mini-checker .cell.none { background: transparent; }
+
+/* ====== Mini-checker (共通CSS) ====== */
+/* グリッドの見た目（IDが違っても同じ指定を共有） */
+#titleCheckerGrid, #checkerGrid {
+  display:grid; grid-template-columns: repeat(10, 18px);
+  grid-auto-rows:18px; gap:2px; justify-content:center;
+}
+
+/* セル配色（タイトル/チェッカー 共通） */
+.cell { width:18px; height:18px; border-radius:3px; border:1px solid #2a3248; }
+.cell.red  { background:#ef4444; border-color:#b91c1c; }
+.cell.blue { background:#3b82f6; border-color:#1d4ed8; }
+.cell.gray { background:#4b5563; border-color:#374151; }
+.cell.none { background:transparent; }
+
+/* 凡例（共通） */
+.legend { display:inline-block; width:12px; height:12px; border-radius:2px; border:1px solid #2a3248; }
+.l-red  { background:#ef4444; border-color:#b91c1c; }
+.l-blue { background:#3b82f6; border-color:#1d4ed8; }
+.l-gray { background:#4b5563; border-color:#374151; }
+.l-none { background:transparent; }
+
+/* タイトル側コンテナの装飾 */
+.title-checker {
+  background:#151820; border-radius:12px; padding:16px 24px; text-align:center;
+  cursor:pointer; transition: transform .2s ease, box-shadow .2s ease;
+  width: fit-content; margin: 0 auto 8px;
+}
+.title-checker:hover { transform:scale(1.02); box-shadow:0 0 8px rgba(255,255,255,0.2); }
+.checker-title { font-size:20px; font-weight:600; color:#e7eef7; margin-bottom:10px; }
+
+/* ====== Checker page extras ====== */
+.checker-title-page { font-size:20px; font-weight:600; color:#e7eef7; text-align:center; margin-bottom:10px; letter-spacing:.03em; }
+.genre-list { display:flex; flex-direction:column; gap:22px; }
+.genre-row  { display:flex; flex-direction:column; gap:10px; }
+.genre-title{ font-weight:600; color:#e7eef7; }
+
+/* 問題カード */
+.card-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap:12px;
+}
+.btn-prob {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; padding:12px; border-radius:12px;
+  border:1px solid #2a3b66; background:#121a2c; color:#e7eef7;
+  text-align:center; min-height:72px; cursor:pointer;
+  transition:transform .06s ease, filter .2s ease; padding:8px 10px;
+}
+.btn-prob:hover { filter:brightness(1.08); }
+.btn-prob:active { transform: translateY(1px); }
+.btn-red  { background:#3a0c0c; border-color:#c54a4a; }
+.btn-blue { background:#0d1b3a; border-color:#3c6ef0; }
+.btn-gray { background:#1e2228; border-color:#475063; color:#d3d8e0; }
+.btn-none { background:transparent; border-style:dashed; color:#9aa3b2; }
+.btn-prob .prob   { font-size: calc(14px * var(--math-scale)); line-height:1.45; }
+.btn-prob .caption{ font-size:12px; color:var(--muted); }
+
+/* ====== Learn page extras ====== */
+.progress-rail { height:10px; background:#101626; border:1px solid #2a3248; border-radius:999px; overflow:hidden; margin-top:10px; }
+.progress-bar  { display:block; height:100%; background:linear-gradient(90deg,#3abff8,#60a5fa); width:0%; }
+
+/* ====== Swipe page minimal ====== */
+#swipeContainer { min-height:70vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
+#swipeCard { background:#fff; border:1px solid #ccc; border-radius:8px; padding:2rem; max-width:600px; box-shadow:0 3px 8px rgba(0,0,0,0.1); }
+#swipeHint { display:none; margin-top:1.5rem; color:#333; }

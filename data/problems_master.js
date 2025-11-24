@@ -1,3 +1,17 @@
+/*
+[仕様メモ / 問題マスタの1要素フィールド]
+
+必須/推奨フィールド:
+- id           : string|number   // ラベルに使用（なければ "#1" など通番を生成）
+- genre        : string          // 例: "多項式関数編", "三角関数編" など
+- problem      : string          // 問題本文（MathJax可） 例: "\\[ \\int ... \\]"
+- policy       : string          // 方針（MathJax可）
+- answer       : string          // 答え（MathJax可）
+- explanation  : string          // 解説（MathJax可）
+
+配列として export または JSON 配列で提供すること。
+*/
+
 export const PROBLEMS = [
   {
   "id": 1,

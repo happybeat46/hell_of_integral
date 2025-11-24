@@ -1,10 +1,51 @@
-<!-- 学習画面 -->
+<!--
+[仕様メモ / body_learn.html]
+
+役割:
+- 出題・解答トグル・正誤記録・進捗表示・結果カード。
+
+コントロール/進捗:
+- #preset            … 出題範囲（all/poly/trig/exp/log 等のプリセット）
+- #mode              … モード（once/debug 等）
+- #btnStartSession   … 現プリセットでセッション開始
+- #btnReset          … 学習ログ消去→ 表示更新
+- #statCur / #statTotal … 出題数/総数
+- #prog              … 進捗バーの幅（%）
+
+操作ボタン:
+- #btnShowPolicy / #btnShowAns / #btnShowExplain … 各トグル表示
+- #btnCorrect / #btnWrong / #btnNext … 記録→遷移
+
+表示ラッパ:
+- #qWrap / #qBox … 問題（常時表示）
+- #pWrap / #pBox … 方針（初期非表示）
+- #aWrap / #aBox … 答え（初期非表示）
+- #eWrap / #eBox … 解説（初期非表示）
+- #meta … 進行中セッションのメタ表示（現在ラベルなど）
+- #perItemStat / #itemShown / #itemCorrect / #itemAcc … この問題の累積
+
+結果カード:
+- #viewResult（初期非表示）
+- #resultMeta / #resultSummary
+- #btnRetryWrong … 直前の範囲内で「shown>0 && correct==0」のみ再挑戦
+- #btnBackHome  … タイトルへ戻る
+
+使用クラス:
+- .card .meta .ghost .select .kx（共通UI）
+- 進捗バーは .progress-rail/.progress-bar を使ってもよい（現在は id 指定）
+
+ロジック前提:
+- 記録は localStorage("integral_hell_logs"): { [label]: { shown, correct } } に累積。
+- 最終問題では #viewResult を表示し、ボタンで再挑戦/ホーム戻る。
+- 表示更新の都度、必要部分に MathJax の typeset を適用。
+-->
+
 <section id="learn-main" style="display:flex; flex-direction:column; gap:18px;">
 
   <!-- コントロール（範囲 / モード / 開始 / リセット） -->
   <div class="card" style="background:#151820; border-radius:12px; padding:16px;">
     <div class="row" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-      <label>出題範囲　
+      <label>出題範囲
         <select id="preset" class="select">
           <option value="all">全ジャンル</option>
           <option value="poly">多項式</option>
@@ -14,7 +55,7 @@
         </select>
       </label>
 
-      <label>モード　
+      <label>モード
         <select id="mode" class="select">
           <option value="once">1周して結果表示</option>
           <option value="debug">デバッグ（順番固定）</option>
@@ -33,7 +74,7 @@
     </div>
   </div>
 
-  <!-- ボタン群（問題カードより上に） -->
+  <!-- ボタン群 -->
   <div id="ctrlWrap" class="card" style="background:#151820; border-radius:12px; padding:12px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
     <button id="btnShowPolicy" class="ghost">方針を表示</button>
     <button id="btnShowAns" class="ghost">答えを表示</button>
@@ -45,7 +86,7 @@
 
   <div class="meta" id="meta"></div>
 
-  <!-- この問題の成績（任意で残しています） -->
+  <!-- この問題の成績 -->
   <div class="meta" id="perItemStat" style="margin:6px 0 10px;">
     この問題: <span id="itemShown">0</span> 回挑戦 ／
     <span id="itemCorrect">0</span> 回正解 ／
@@ -76,7 +117,7 @@
     <div id="eBox" class="kx" style="min-height:80px;"></div>
   </div>
 
-  <!-- 結果画面（簡易） -->
+  <!-- 結果画面 -->
   <div id="viewResult" class="card" style="display:none; background:#151820; border-radius:12px; padding:16px;">
     <h2 style="margin:0 0 8px;">結果</h2>
     <div class="meta" id="resultMeta"></div>
@@ -87,19 +128,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .meta { font-size:13px; color:#aab4c3; margin-bottom:6px; }
-  .bar > span { transition: width .2s ease; }
-  .select, button.ghost {
-    background:#1b2740;
-    color:#e7eef7;
-    border:1px solid #2a3b66;
-    border-radius:8px;
-    padding:8px 14px;
-    cursor:pointer;
-    transition:0.2s;
-  }
-  button.ghost:hover, .select:focus { background:#2a3b66; }
-  .kx { font-size: calc(20px * var(--math-scale, 0.90)); line-height:1.6; }
-</style>

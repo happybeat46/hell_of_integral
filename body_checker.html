@@ -1,12 +1,31 @@
-<!-- body_checker.html -->
+<!--
+[仕様メモ / body_checker.html]
+
+役割:
+- クリアチェッカー画面。上: 10×10 ミニマップ、下: ジャンル別カード一覧。
+
+使用ID:
+- #checkerGrid     … 10×10 のセルコンテナ（タイトルと同サイズ・同CSS）
+- #checkerByGenre  … ジャンル別のカード群の親（各カードは JS で生成）
+
+使用クラス:
+- .mini-checker / .cell .red .blue .gray .none（ミニマップ共通CSS）
+- .legend .l-red .l-blue .l-gray .l-none（凡例）
+- .genre-list（縦並び） / .card-grid（横並び折返し）
+- .btn-prob（問題カード） + .btn-red/.btn-blue/.btn-gray/.btn-none（色カテゴリ）
+
+ロジック前提:
+- #checkerGrid のセルクリック → 該当問題ラベルで learn を開始。
+- #checkerByGenre はジャンルごとに問題ボタンを並べ、クリックで同上。
+- 数式を含むボタンは差し替え後に MathJax レンダリングを行う。
+-->
+
 <section id="checker-main" style="display:flex; flex-direction:column; gap:18px;">
 
   <!-- 10x10 ミニマップ（そのまま） -->
   <div class="checker-title">クリアチェッカー</div>
   <div class="card" style="background:#151820; border-radius:12px; padding:16px;">
-    <div id="checkerGrid"
-         style="display:grid; grid-template-columns: repeat(10, 12px); grid-auto-rows: 12px; gap: 2px;">
-    </div>
+    <div id="checkerGrid" class="mini-checker"></div>
     <div class="meta" style="margin-top:10px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
       <span class="legend l-red"></span> 80%以上
       <span class="legend l-blue"></span> 50%以上
@@ -21,70 +40,3 @@
     <div id="checkerByGenre" class="genre-list"></div>
   </div>
 </section>
-
-<style>
-  /* === クリアチェッカーのタイトル === */
-        .checker-title {
-        font-size: 20px;
-        font-weight: 600;
-        color: #e7eef7;
-        text-align: center;
-        margin-bottom: 10px;
-        letter-spacing: 0.03em;
-        }
-  .meta { font-size:13px; color:#aab4c3; }
-  .legend { display:inline-block; width:12px; height:12px; border-radius:2px; border:1px solid #2a3248; }
-  .l-red  { background:#ef4444; border-color:#b91c1c; }
-  .l-blue { background:#3b82f6; border-color:#1d4ed8; }
-  .l-gray { background:#4b5563; border-color:#374151; }
-  .l-none { background:transparent; }
-
-  .cell { width:12px; height:12px; border-radius:2px; border:1px solid #2a3248; }
-  .cell.red  { background:#ef4444; border-color:#b91c1c; }
-  .cell.blue { background:#3b82f6; border-color:#1d4ed8; }
-  .cell.gray { background:#4b5563; border-color:#374151; }
-  .cell.none { background:transparent; }
-
-  /* === ジャンル縦積み === */
-  .genre-list { display:flex; flex-direction:column; gap:22px; }
-  .genre-row { display:flex; flex-direction:column; gap:10px; }
-  .genre-title { font-weight:600; color:#e7eef7; }
-
-  /* ★ カード群：スマホでも最低2列（160px幅）になるように */
-  .card-grid {
-    display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 12px;
-  }
-  /* ミニグリッド全体を中央に */
-    #checkerGrid {
-        justify-content: center; 
-    }
-
-/* 凡例（色ラベル）も中央寄せにする場合 */
-    #checkerGrid + .meta {
-    justify-content: center;
-    }
-
-  /* ★ 問題カード（中にMathJax数式＋キャプション） */
-  .btn-prob {
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:10px; padding:12px; border-radius:12px;
-    border:1px solid #2a3b66; background:#121a2c; color:#e7eef7;
-    text-align:center; min-height:72px; cursor:pointer;
-    transition:transform .06s ease, filter .2s ease; padding: 8px 10px;
-  }
-  .btn-prob:hover { filter:brightness(1.08); }
-  .btn-prob:active { transform: translateY(1px); }
-
-  .btn-red  { background:#3a0c0c; border-color:#c54a4a; }
-  .btn-blue { background:#0d1b3a; border-color:#3c6ef0; }
-  .btn-gray { background:#1e2228; border-color:#475063; color:#d3d8e0; }
-  .btn-none { background:transparent; border-style:dashed; color:#9aa3b2; }
-
-  .btn-prob .prob   { font-size: calc(14px * var(--math-scale, 0.90)); line-height:1.45; }
-  .btn-prob .caption{ font-size:12px; color:#aab4c3; }
-
-  /* クリアチェッカー内の数式は明るく（見やすさUP） */
-  .mjx-chtml { color:#f5f7fa !important; }
-</style>
