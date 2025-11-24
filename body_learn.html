@@ -1,59 +1,105 @@
-<section class="learn-shell" style="display:flex; gap:16px; flex-direction:column; max-width:900px;">
-  <!-- 上部コントロール -->
-  <div class="controls" style="display:flex; flex-wrap:wrap; gap:12px; align-items:end;">
-    <div>
-      <label>出題範囲</label><br/>
-      <select id="presetSelect">
-        <option value="poly">多項式関数編</option>
-        <option value="tri">三角関数編</option>
-        <option value="exp">指数関数編</option>
-        <option value="log">対数関数編</option>
-        <option value="all">全ジャンル</option>
-      </select>
-    </div>
+<!-- 学習画面 -->
+<section id="learn-main" style="display:flex; flex-direction:column; gap:18px;">
 
-    <div>
-      <button id="btnStart">出題開始</button>
-      <button id="btnReset">成績リセット</button>
+  <!-- コントロール（範囲 / モード / 開始 / リセット） -->
+  <div class="card" style="background:#151820; border-radius:12px; padding:16px;">
+    <div class="row" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+      <label>出題範囲　
+        <select id="preset" class="select">
+          <option value="all">全ジャンル</option>
+          <option value="poly">多項式</option>
+          <option value="trig">三角</option>
+          <option value="exp">指数</option>
+          <option value="log">対数</option>
+        </select>
+      </label>
+
+      <label>モード　
+        <select id="mode" class="select">
+          <option value="once">1周して結果表示</option>
+          <option value="debug">デバッグ（順番固定）</option>
+        </select>
+      </label>
+
+      <button id="btnStartSession" class="ghost">開始</button>
+      <button id="btnReset" class="ghost">成績リセット</button>
+
+      <div style="margin-left:auto;">
+        出題: <span id="statCur">0</span>/<span id="statTotal">0</span>
+      </div>
+    </div>
+    <div class="bar" style="height:10px; background:#101626; border:1px solid #2a3248; border-radius:999px; overflow:hidden; margin-top:10px;">
+      <span id="prog" style="display:block; height:100%; background:linear-gradient(90deg,#3abff8,#60a5fa); width:0%;"></span>
     </div>
   </div>
 
-  <!-- 問題表示 -->
-  <div class="card" style="border:1px solid #ddd; padding:16px; border-radius:10px;">
-    <div style="display:flex;justify-content:space-between;align-items:center; gap:16px;">
-      <h3 id="titleLine" style="margin:0;">問題</h3>
-      <div id="statLine" style="font-size:12px;color:#666;">表示回数: - / 正答: - / 正答率: -%</div>
+  <!-- ボタン群（問題カードより上に） -->
+  <div id="ctrlWrap" class="card" style="background:#151820; border-radius:12px; padding:12px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+    <button id="btnShowPolicy" class="ghost">方針を表示</button>
+    <button id="btnShowAns" class="ghost">答えを表示</button>
+    <button id="btnShowExplain" class="ghost">解説を表示</button>
+    <button id="btnCorrect" class="ghost">正解</button>
+    <button id="btnWrong" class="ghost">不正解</button>
+    <button id="btnNext" class="ghost">次の問題へ</button>
+  </div>
+
+  <div class="meta" id="meta"></div>
+
+  <!-- この問題の成績（任意で残しています） -->
+  <div class="meta" id="perItemStat" style="margin:6px 0 10px;">
+    この問題: <span id="itemShown">0</span> 回挑戦 ／
+    <span id="itemCorrect">0</span> 回正解 ／
+    正答率 <span id="itemAcc">0%</span>
+  </div>
+
+  <!-- 問題 -->
+  <div class="card" id="qWrap" style="background:#151820; border-radius:12px; padding:16px;">
+    <div class="meta">問題</div>
+    <div id="qBox" class="kx" style="min-height:80px;"></div>
+  </div>
+
+  <!-- 方針（トグル） -->
+  <div id="pWrap" class="card" style="background:#151820; border-radius:12px; padding:16px; display:none;">
+    <div class="meta">方針</div>
+    <div id="pBox" class="kx" style="min-height:60px;"></div>
+  </div>
+
+  <!-- 答え（トグル） -->
+  <div id="aWrap" class="card" style="background:#151820; border-radius:12px; padding:16px; display:none;">
+    <div class="meta">答え</div>
+    <div id="aBox" class="kx" style="min-height:40px;"></div>
+  </div>
+
+  <!-- 解説（トグル） -->
+  <div id="eWrap" class="card" style="background:#151820; border-radius:12px; padding:16px; display:none;">
+    <div class="meta">解説</div>
+    <div id="eBox" class="kx" style="min-height:80px;"></div>
+  </div>
+
+  <!-- 結果画面（簡易） -->
+  <div id="viewResult" class="card" style="display:none; background:#151820; border-radius:12px; padding:16px;">
+    <h2 style="margin:0 0 8px;">結果</h2>
+    <div class="meta" id="resultMeta"></div>
+    <div class="kx" id="resultSummary" style="margin-top:10px;"></div>
+    <div class="controls" style="display:flex; gap:12px; margin-top:14px;">
+      <button id="btnRetryWrong" class="ghost">「前回の間違いのみ」で再挑戦</button>
+      <button id="btnBackHome" class="ghost">ホームに戻る</button>
     </div>
-    <div id="question" style="margin-top:8px;"></div>
   </div>
-
-  <!-- ボタン群 -->
-  <div style="display:flex; gap:8px; flex-wrap:wrap;">
-    <button id="btnShowHint">方針を表示</button>
-    <button id="btnShowAnswer">答えを表示</button>
-    <button id="btnShowExplanation">解説を表示</button>
-    <button id="btnWrong" style="margin-left:auto;">できない</button>
-    <button id="btnCorrect">できた</button>
-  </div>
-
-  <!-- 方針 -->
-  <details id="hintWrap" style="display:none;">
-    <summary>方針</summary>
-    <div id="hint" style="padding:8px 0;"></div>
-  </details>
-
-  <!-- 答え -->
-  <details id="answerWrap" style="display:none;">
-    <summary>答え</summary>
-    <div id="answer" style="padding:8px 0;"></div>
-  </details>
-
-  <!-- 解説 -->
-  <details id="explanationWrap" style="display:none;">
-    <summary>解説</summary>
-    <div id="explanation" style="padding:8px 0;"></div>
-  </details>
-
-  <!-- 進行状況 -->
-  <div id="progressInfo" style="font-size:12px; color:#666;"></div>
 </section>
+
+<style>
+  .meta { font-size:13px; color:#aab4c3; margin-bottom:6px; }
+  .bar > span { transition: width .2s ease; }
+  .select, button.ghost {
+    background:#1b2740;
+    color:#e7eef7;
+    border:1px solid #2a3b66;
+    border-radius:8px;
+    padding:8px 14px;
+    cursor:pointer;
+    transition:0.2s;
+  }
+  button.ghost:hover, .select:focus { background:#2a3b66; }
+  .kx { font-size: calc(20px * var(--math-scale, 0.90)); line-height:1.6; }
+</style>

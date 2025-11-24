@@ -1,5 +1,143 @@
-<section style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;">
-  <h1 style="font-size:3rem;margin:0.5em 0;text-align:center;">積分地獄</h1>
-  <p style="font-size:1.1rem;color:#666;text-align:center;">〜 高校数学III 積分演習 〜</p>
-  <button id="btnStart" style="margin-top:2rem;padding:0.8rem 1.5rem;font-size:1rem;">演習を開始する</button>
-</section>
+<!-- === body_title.html === -->
+<div class="title-screen">
+  <h1 class="app-title">積分地獄</h1>
+
+  <div class="title-buttons">
+    <button id="btnStart" class="btn btn-primary">演習開始</button>
+    <button id="btnReset" class="btn btn-secondary">成績リセット</button>
+  </div>
+  <div id="titleChecker" class="title-checker" role="button" tabindex="0" aria-label="クリアチェッカーを開く">
+    <div class="checker-title"></div>
+    <div id="titleCheckerGrid"></div>
+  </div>
+</div>
+
+<style>
+    /* タイトルのミニ・クリアチェッカー */
+  .title-checker{
+    background:#151820; border-radius:12px; padding:16px 20px; text-align:center;
+    cursor:pointer; transition:transform .12s ease, box-shadow .12s ease;
+    width: fit-content; margin: 0 auto 8px;
+  }
+  .title-checker:hover{ transform:scale(1.02); box-shadow:0 0 10px rgba(255,255,255,.08); }
+
+  .checker-title{ font-size:18px; font-weight:600; color:#e7eef7; margin-bottom:8px; }
+
+  #titleCheckerGrid{
+    display:grid;
+    grid-template-columns:repeat(10,18px);
+    grid-auto-rows:18px;
+    gap:2px;
+    justify-content:center;
+    margin:0 auto 8px;
+  }
+  #titleCheckerGrid .cell{ width:18px; height:18px; border-radius:3px; border:1px solid #2a3248; }
+
+  .legend-row{ display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap; }
+  .legend{ display:inline-block; width:12px; height:12px; border-radius:2px; border:1px solid #2a3248; }
+  .l-red{  background:#ef4444; border-color:#b91c1c; }
+  .l-blue{ background:#3b82f6; border-color:#1d4ed8; }
+  .l-gray{ background:#4b5563; border-color:#374151; }
+  .l-none{ background:transparent; }
+
+  /* タイトルのミニ・クリアチェッカーの配色 */
+  #titleCheckerGrid .cell { 
+    width: 18px; height: 18px; border-radius: 3px; border: 1px solid #2a3248;
+  }
+  #titleCheckerGrid .cell.red  { background:#ef4444; border-color:#b91c1c; }
+  #titleCheckerGrid .cell.blue { background:#3b82f6; border-color:#1d4ed8; }
+  #titleCheckerGrid .cell.gray { background:#4b5563; border-color:#374151; }
+  #titleCheckerGrid .cell.none { background:transparent; }
+
+.title-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  gap: 20px;
+  color: #fff;
+  padding-top: 40px;  
+}
+.app-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.title-checker {
+  background: #151820;
+  border-radius: 12px;
+  padding: 16px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.title-checker:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 8px rgba(255,255,255,0.2);
+}
+.checker-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #e7eef7;
+  margin-bottom: 10px;
+}
+#titleCheckerGrid {
+  display: grid;
+  grid-template-columns: repeat(10, 18px);
+  grid-auto-rows: 18px;
+  gap: 2px;
+  justify-content: center;
+  margin: 0 auto;
+}
+#titleCheckerGrid .cell {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  border: 1px solid #2a3248;
+}
+.btn {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+.btn-primary { background: #2b5bd9; color: #fff; }
+.btn-primary:hover { background: #3b6cff; }
+.btn-secondary { background: #444; color: #fff; }
+.btn-secondary:hover { background: #666; }
+</style>
+
+<script>
+// タイトル画面内のクリアチェッカー描画
+function initTitleChecker() {
+  const grid = document.getElementById('titleCheckerGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const N = Math.min(100, MASTER.length || 0);
+  for (let i = 0; i < 100; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell none';
+    if (i < N) {
+      const label = MASTER[i]?.id ?? (i + 1);
+      const lg = getLog(label);
+      const { key } = scoreToColor(lg.shown||0, lg.correct||0);
+      cell.className = `cell ${key}`;
+    }
+    grid.appendChild(cell);
+  }
+
+  // クリックでチェッカー画面に遷移
+  const container = document.getElementById('titleCheckerContainer');
+  if (container) {
+    container.addEventListener('click', () => {
+      loadBody('checker');
+    });
+  }
+}
+
+// ロード時に実行
+window.addEventListener('DOMContentLoaded', initTitleChecker);
+</script>
