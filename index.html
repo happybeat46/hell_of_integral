@@ -62,69 +62,15 @@ MathJax 設定（要件）:
 <body>
   <header class="wrap" style="display:flex;align-items:center;gap:12px;">
     <a id="appLogo" class="logo" href="#">積分地獄</a>
-    <nav class="debug-nav" aria-label="debug-only navigation">
-      <button class="debug-btn" data-body="title">body_title.html</button>
-      <button class="debug-btn" data-body="checker">body_checker.html</button>
-      <button class="debug-btn" data-body="learn">body_learn.html</button>
-      <button class="debug-btn" data-body="swipe">body_swipe.html</button>
-    </nav>
   </header>
 
   <!-- 実表示部：body_**.htmlの内容をここに流す -->
   <main id="app" class="wrap"></main>
-
-  <!-- デバッグ専用：ページ遷移だけをハードコーディング -->
-  <script>
-    // bodyファイル名のマップ
-    const BODY_MAP = {
-      title:   './body_title.html',
-      checker: './body_checker.html',
-      learn:   './body_learn.html',
-      swipe:   './body_swipe.html'
-    };
-
-    // 指定ボディを #app に流し込み（MathJax 再typeset込み）
-    async function loadBody(kind) {
-      const url = BODY_MAP[kind];
-      const app = document.getElementById('app');
-      if (!url || !app) return;
-
-      try {
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const html = await res.text();
-        app.innerHTML = html;
-
-        // MathJax 再レンダ（存在チェックつき）
-        if (window.MathJax && MathJax.typesetPromise) {
-          await MathJax.typesetPromise([app]);
-        }
-      } catch (err) {
-        app.innerHTML = `
-          <div class="card">
-            <h3 style="margin-top:0;">読み込みエラー</h3>
-            <p class="meta">"${url}" を読み込めませんでした。(${String(err)})</p>
-          </div>`;
-      }
-    }
-
-    // ロゴで title に戻る
-    document.getElementById('appLogo')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      loadBody('title');
-    });
-
-    // デバッグボタン群
-    document.querySelectorAll('.debug-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const kind = btn.getAttribute('data-body');
-        loadBody(kind);
-      });
-    });
-
-    // 初期表示：title
-    loadBody('title');
-  </script>
+<script src="app.js"></script>
 </body>
-
+<footer class="app-footer">
+  © 2025 happybeat46
+</footer>
+<!-- 1問だけ表示するためのモーダルコンテナ -->
+<div id="modalContainer" hidden></div>
 </html>

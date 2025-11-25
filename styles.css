@@ -44,8 +44,8 @@ button.ghost:hover, select.select:focus { background:#2a3b66; }
 
 /* ====== Title screen ====== */
 .title-screen {
-  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
-  min-height:100vh; gap:20px; color:#fff; padding-top:40px;
+  display:flex; flex-direction:column; align-items:center; justify-content: flex-start;
+  gap:20px; color:#fff;
 }
 .app-title { font-size:28px; font-weight:700; margin-bottom:10px; }
 
@@ -105,6 +105,29 @@ button.ghost:hover, select.select:focus { background:#2a3b66; }
 .title-checker:hover { transform:scale(1.02); box-shadow:0 0 8px rgba(255,255,255,0.2); }
 .checker-title { font-size:20px; font-weight:600; color:#e7eef7; margin-bottom:10px; }
 
+/* ランダム一問ボタンを上段中央に配置 */
+.title-buttons {
+  display: flex;
+  flex-direction: column; /* ← 上下配置に変更 */
+  align-items: center;
+  gap: 12px;
+}
+
+/* 下段の2ボタンを横並びにするためラッパを追加する場合は以下（推奨） */
+.title-buttons-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ランダム一問ボタンの見た目調整 */
+#btnRandomOne {
+  min-width: 240px;
+  padding: 16px 24px;       /* 通常ボタンの倍くらいの高さ */
+  font-size: 1.1rem;
+  border-radius: 10px;
+}
+
 /* ====== Checker page extras ====== */
 .checker-title-page { font-size:20px; font-weight:600; color:#e7eef7; text-align:center; margin-bottom:10px; letter-spacing:.03em; }
 .genre-list { display:flex; flex-direction:column; gap:22px; }
@@ -141,3 +164,74 @@ button.ghost:hover, select.select:focus { background:#2a3b66; }
 #swipeContainer { min-height:70vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
 #swipeCard { background:#fff; border:1px solid #ccc; border-radius:8px; padding:2rem; max-width:600px; box-shadow:0 3px 8px rgba(0,0,0,0.1); }
 #swipeHint { display:none; margin-top:1.5rem; color:#333; }
+
+/* === タイトル画面のPDFリンク === */
+.pdf-links {
+  margin-top: 24px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  font-size: 0.9rem;
+}
+.pdf-links a {
+  color: #a3b4d9;               /* 落ち着いた青系。hoverで白に */
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.pdf-links a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* === フッター === */
+.app-footer {
+  margin-top: 40px;
+  padding: 12px 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #8b92a9;
+  border-top: 1px solid #2a3248;
+}
+
+/* ======= Learn Page Modal ======= */
+/* === Modal === */
+#modalContainer {
+  position: fixed;
+  inset: 0;
+  display: none;               /* ← 初期は非表示 */
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+#modalContainer.is-open {
+  display: flex;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+.modal-card {
+  position: relative;
+  background: var(--card, #fff);
+  color: var(--ink, #000);
+  border-radius: 12px;
+  padding: 24px;
+  width: min(90vw, 640px);
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  z-index: 201;
+}
+
+/* モーダルで表示している body_learn.html ではヘッダーを非表示 */
+.modal-card .learn-header,
+.modal-card #perItemStat,
+.modal-card #btnNext {
+  display: none !important;
+}

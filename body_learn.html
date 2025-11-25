@@ -43,34 +43,36 @@
 <section id="learn-main" style="display:flex; flex-direction:column; gap:18px;">
 
   <!-- コントロール（範囲 / モード / 開始 / リセット） -->
-  <div class="card" style="background:#151820; border-radius:12px; padding:16px;">
-    <div class="row" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-      <label>出題範囲
-        <select id="preset" class="select">
-          <option value="all">全ジャンル</option>
-          <option value="poly">多項式</option>
-          <option value="trig">三角</option>
-          <option value="exp">指数</option>
-          <option value="log">対数</option>
-        </select>
-      </label>
+  <div class="learn-header">
+    <div class="card"  style="background:#151820; border-radius:12px; padding:16px;">
+      <div class="row" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <label>出題範囲
+          <select id="preset" class="select">
+            <option value="all">全ジャンル</option>
+            <option value="poly">多項式</option>
+            <option value="trig">三角</option>
+            <option value="exp">指数</option>
+            <option value="log">対数</option>
+          </select>
+        </label>
 
-      <label>モード
-        <select id="mode" class="select">
-          <option value="once">1周して結果表示</option>
-          <option value="debug">デバッグ（順番固定）</option>
-        </select>
-      </label>
+        <label>モード
+          <select id="mode" class="select">
+            <option value="once">ランダム</option>
+            <option value="debug">順番</option>
+          </select>
+        </label>
 
-      <button id="btnStartSession" class="ghost">開始</button>
-      <button id="btnReset" class="ghost">成績リセット</button>
+        <button id="btnStartSession" class="ghost">開始</button>
+        <button id="btnReset" class="ghost">成績リセット</button>
 
-      <div style="margin-left:auto;">
-        出題: <span id="statCur">0</span>/<span id="statTotal">0</span>
+        <div style="margin-left:auto;">
+          出題: <span id="statCur">0</span>/<span id="statTotal">0</span>
+        </div>
       </div>
-    </div>
-    <div class="bar" style="height:10px; background:#101626; border:1px solid #2a3248; border-radius:999px; overflow:hidden; margin-top:10px;">
-      <span id="prog" style="display:block; height:100%; background:linear-gradient(90deg,#3abff8,#60a5fa); width:0%;"></span>
+      <div class="bar" style="height:10px; background:#101626; border:1px solid #2a3248; border-radius:999px; overflow:hidden; margin-top:10px;">
+        <span id="prog" style="display:block; height:100%; background:linear-gradient(90deg,#3abff8,#60a5fa); width:0%;"></span>
+      </div>
     </div>
   </div>
 
